@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Icon from '@/components/ui/icon';
@@ -6,16 +6,24 @@ import { Badge } from '@/components/ui/badge';
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState('home');
+  const [onlinePlayers, setOnlinePlayers] = useState(187);
 
-  const leaderboardData = [
-    { rank: 1, username: 'SteveBuilder', level: 156, kills: 4521, badge: '👑' },
-    { rank: 2, username: 'CreeperHunter', level: 142, kills: 4102, badge: '⭐' },
-    { rank: 3, username: 'DiamondMiner', level: 138, kills: 3891, badge: '💎' },
-    { rank: 4, username: 'EnderDragon', level: 125, kills: 3456, badge: '🔥' },
-    { rank: 5, username: 'NetherKing', level: 118, kills: 3201, badge: '⚔️' },
-    { rank: 6, username: 'RedstoneWiz', level: 112, kills: 2987, badge: '🎯' },
-    { rank: 7, username: 'BlockBreaker', level: 105, kills: 2754, badge: '🏆' },
-    { rank: 8, username: 'PvPMaster', level: 98, kills: 2543, badge: '⚡' },
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setOnlinePlayers(prev => Math.max(150, Math.min(250, prev + Math.floor(Math.random() * 11) - 5)));
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const recentPurchases = [
+    { username: 'DarkMaster_01', donate: 'MOROK', time: '2 минуты назад', emoji: '❄️' },
+    { username: 'ProGamer228', donate: 'CHRISTMAS', time: '15 минут назад', emoji: '🎄' },
+    { username: 'BuilderKing', donate: 'XOZYAIN', time: '27 минут назад', emoji: '🏗️' },
+    { username: 'PvPLegend', donate: 'ELYTRIUM', time: '1 час назад', emoji: '✨' },
+    { username: 'NoobSlayer', donate: 'VLASTELIN', time: '1 час назад', emoji: '⚔️' },
+    { username: 'MegaBuilder', donate: 'MOROK', time: '2 часа назад', emoji: '❄️' },
+    { username: 'IceMage777', donate: 'CHRISTMAS', time: '3 часа назад', emoji: '🎄' },
+    { username: 'RedstoneKing', donate: 'PRAVITEL', time: '4 часа назад', emoji: '👑' },
   ];
 
   const donateOptions = [
@@ -65,9 +73,34 @@ const Index = () => {
     },
   ];
 
-  const rules = [
-    { title: 'Запрещено', items: ['Гриферство вне режима', 'Использование читов', 'Оскорбления игроков', 'Реклама других серверов'] },
-    { title: 'Разрешено', items: ['PvP в специальных зонах', 'Торговля с игроками', 'Создание кланов', 'Строительство и фермы'] },
+  const chatRules = [
+    { code: '1.1', text: 'Спам (флуд)', punishment: 'мут на 30 мин' },
+    { code: '1.1.2', text: 'Пиар проектов (серверов, чатов, читов и т.д)', punishment: 'бан навсегда' },
+    { code: '1.2', text: 'Массивное оскорбление', punishment: 'мут на 1 час' },
+    { code: '1.3', text: 'Организация флуда в чате с помощью опроса', punishment: 'мут на 4 часа' },
+    { code: '1.4', text: 'Упоминание родителей', punishment: 'мут на 7 дней' },
+    { code: '1.4.1', text: 'Оскорбление проекта и модераторов сервера', punishment: 'мут на 12 часов' },
+  ];
+
+  const mainRules = [
+    { code: '1.5', text: 'Использование читов', punishment: '14 дней бан' },
+    { code: '1.5.1', text: 'Тим с читером', punishment: 'бан на 8 дней' },
+    { code: '1.5.2', text: 'Клан читеров', punishment: 'бан на 14 дней каждого' },
+    { code: '1.6', text: 'Признание в использовании читов', punishment: '12 дней бан' },
+    { code: '1.7', text: 'Ставить похожий ник как у администрации и ютуберов', punishment: 'бан навсегда' },
+    { code: '1.8', text: 'Использование дудос пакетов', punishment: 'бан на 28 дней' },
+    { code: '1.8.1', text: 'Попытка краша сервера', punishment: 'бан навсегда' },
+    { code: '1.9', text: 'Отказ от проверки', punishment: 'бан на 14 дней' },
+    { code: '2.0', text: 'Задерживать модератора во время проверки', punishment: 'бан на 16 дней' },
+    { code: '2.1', text: 'Выдавать себя за модерацию проекта', punishment: 'бан на 20 дней' },
+    { code: '2.5', text: 'Иметь больше 5 аккаунтов в бане', punishment: 'бан на 14 дней каждый новый аккаунт' },
+  ];
+
+  const moderatorRules = [
+    { code: '2.2', text: 'Некорректный тп', punishment: 'варн' },
+    { code: '2.3', text: 'Взятка', punishment: 'снятие' },
+    { code: '2.4', text: 'Выдавать игрокам админские предметы/бафы', punishment: 'варн' },
+    { code: '2.5', text: 'Некорректный мут', punishment: 'варн' },
   ];
 
   return (
@@ -96,9 +129,9 @@ const Index = () => {
                 <Icon name="Gem" size={18} />
                 Донат
               </Button>
-              <Button variant={activeSection === 'leaderboard' ? 'default' : 'ghost'} onClick={() => setActiveSection('leaderboard')} className="gap-2">
-                <Icon name="Trophy" size={18} />
-                Рейтинг
+              <Button variant={activeSection === 'purchases' ? 'default' : 'ghost'} onClick={() => setActiveSection('purchases')} className="gap-2">
+                <Icon name="ShoppingBag" size={18} />
+                Покупки
               </Button>
             </div>
           </div>
@@ -123,9 +156,17 @@ const Index = () => {
                   <Icon name="Play" size={20} />
                   Начать играть
                 </Button>
-                <Button size="lg" variant="outline" className="text-lg px-8 gap-2">
-                  <Icon name="Users" size={20} />
-                  Discord
+                <Button size="lg" variant="outline" className="text-lg px-8 gap-2" asChild>
+                  <a href="https://discord.gg/asuxgrief" target="_blank" rel="noopener noreferrer">
+                    <Icon name="MessageCircle" size={20} />
+                    Discord
+                  </a>
+                </Button>
+                <Button size="lg" variant="outline" className="text-lg px-8 gap-2" asChild>
+                  <a href="https://t.me/asuxgrief" target="_blank" rel="noopener noreferrer">
+                    <Icon name="Send" size={20} />
+                    Telegram
+                  </a>
                 </Button>
               </div>
               <div className="flex gap-8 justify-center pt-8">
@@ -138,7 +179,7 @@ const Index = () => {
                   <div className="text-muted-foreground">Онлайн</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-4xl font-bold text-primary">200+</div>
+                  <div className="text-4xl font-bold text-primary animate-pulse">{onlinePlayers}</div>
                   <div className="text-muted-foreground">Онлайн сейчас</div>
                 </div>
               </div>
@@ -264,63 +305,90 @@ const Index = () => {
         )}
 
         {activeSection === 'rules' && (
-          <div className="max-w-4xl mx-auto space-y-8">
+          <div className="max-w-6xl mx-auto space-y-8">
             <div className="text-center space-y-4">
-              <h2 className="text-4xl font-bold text-foreground">Правила сервера</h2>
-              <p className="text-xl text-muted-foreground">Соблюдай правила и получай удовольствие от игры</p>
+              <h2 className="text-4xl font-bold text-foreground">Правила сервера AsuxGrief</h2>
+              <p className="text-xl text-muted-foreground">Настоящий свод правил создан проектом AsuxGrief</p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
-              {rules.map((section, idx) => (
-                <Card key={idx}>
-                  <CardHeader>
-                    <CardTitle className="text-2xl flex items-center gap-2">
-                      {section.title === 'Запрещено' ? (
-                        <Icon name="Ban" size={24} className="text-destructive" />
-                      ) : (
-                        <Icon name="CheckCircle" size={24} className="text-primary" />
-                      )}
-                      {section.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-3">
-                      {section.items.map((item, i) => (
-                        <li key={i} className="flex items-start gap-3 p-3 rounded-lg bg-muted/50">
-                          {section.title === 'Запрещено' ? (
-                            <Icon name="X" size={20} className="text-destructive mt-0.5" />
-                          ) : (
-                            <Icon name="Check" size={20} className="text-primary mt-0.5" />
-                          )}
-                          <span className="text-base">{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-
-            <Card className="border-destructive/50">
+            <Card>
               <CardHeader>
-                <CardTitle className="text-2xl flex items-center gap-2 text-destructive">
-                  <Icon name="AlertTriangle" size={24} />
-                  Система наказаний
+                <CardTitle className="text-2xl flex items-center gap-2">
+                  <Icon name="MessageSquare" size={24} className="text-primary" />
+                  Правила чата
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="p-4 bg-muted rounded-lg">
-                  <div className="font-semibold mb-1">Предупреждение (Warn)</div>
-                  <div className="text-muted-foreground">За мелкие нарушения: флуд, капс в чате</div>
+              <CardContent>
+                <div className="space-y-2">
+                  {chatRules.map((rule, idx) => (
+                    <div key={idx} className="flex items-start gap-4 p-4 rounded-lg bg-muted/50 hover:bg-muted transition-colors">
+                      <div className="font-mono font-bold text-primary min-w-[60px]">{rule.code}</div>
+                      <div className="flex-1">
+                        <div className="font-medium mb-1">{rule.text}</div>
+                        <div className="text-sm text-destructive">Наказание: {rule.punishment}</div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <div className="p-4 bg-muted rounded-lg">
-                  <div className="font-semibold mb-1">Мут (30 мин - 7 дней)</div>
-                  <div className="text-muted-foreground">За оскорбления, спам, рекламу</div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-2xl flex items-center gap-2">
+                  <Icon name="Shield" size={24} className="text-primary" />
+                  Основные правила
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  {mainRules.map((rule, idx) => (
+                    <div key={idx} className="flex items-start gap-4 p-4 rounded-lg bg-muted/50 hover:bg-muted transition-colors">
+                      <div className="font-mono font-bold text-primary min-w-[60px]">{rule.code}</div>
+                      <div className="flex-1">
+                        <div className="font-medium mb-1">{rule.text}</div>
+                        <div className="text-sm text-destructive">Наказание: {rule.punishment}</div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <div className="p-4 bg-muted rounded-lg">
-                  <div className="font-semibold mb-1">Бан (1 день - навсегда)</div>
-                  <div className="text-muted-foreground">За читы, серьёзный гриф в запрещенных зонах, мошенничество</div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-2xl flex items-center gap-2">
+                  <Icon name="Users" size={24} className="text-primary" />
+                  Правила для модерации
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  {moderatorRules.map((rule, idx) => (
+                    <div key={idx} className="flex items-start gap-4 p-4 rounded-lg bg-muted/50 hover:bg-muted transition-colors">
+                      <div className="font-mono font-bold text-primary min-w-[60px]">{rule.code}</div>
+                      <div className="flex-1">
+                        <div className="font-medium mb-1">{rule.text}</div>
+                        <div className="text-sm text-destructive">Наказание: {rule.punishment}</div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-primary/50">
+              <CardHeader>
+                <CardTitle className="text-2xl flex items-center gap-2 text-primary">
+                  <Icon name="AlertCircle" size={24} />
+                  Важно для модерации
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-lg">
+                  Выдавать мут и бан строго по правилам проекта по пунктам (например: 1.2, 1.5 и т.д). 
+                  Выдавание наказания не по пункту — варн!
+                </p>
               </CardContent>
             </Card>
           </div>
@@ -395,67 +463,59 @@ const Index = () => {
           </div>
         )}
 
-        {activeSection === 'leaderboard' && (
+        {activeSection === 'purchases' && (
           <div className="max-w-5xl mx-auto space-y-8">
             <div className="text-center space-y-4">
-              <h2 className="text-4xl font-bold text-foreground">Таблица лидеров</h2>
-              <p className="text-xl text-muted-foreground">Топ игроков сервера AsuxGrief</p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6 mb-8">
-              {leaderboardData.slice(0, 3).map((player, idx) => (
-                <Card key={idx} className={`text-center ${idx === 0 ? 'border-primary border-2 scale-105' : ''}`}>
-                  <CardHeader>
-                    <div className="text-6xl mb-2">{player.badge}</div>
-                    <div className="text-4xl font-bold text-primary">#{player.rank}</div>
-                    <CardTitle className="text-xl">{player.username}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Уровень:</span>
-                        <span className="font-bold">{player.level}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Убийств:</span>
-                        <span className="font-bold">{player.kills}</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+              <h2 className="text-4xl font-bold text-foreground">Последние покупки</h2>
+              <p className="text-xl text-muted-foreground">Игроки, которые поддержали AsuxGrief</p>
             </div>
 
             <Card>
               <CardHeader>
-                <CardTitle>Полный рейтинг</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <Icon name="ShoppingBag" size={24} className="text-primary" />
+                  Недавние транзакции
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  {leaderboardData.map((player, idx) => (
+                  {recentPurchases.map((purchase, idx) => (
                     <div
                       key={idx}
-                      className={`flex items-center justify-between p-4 rounded-lg transition-colors ${
-                        idx < 3 ? 'bg-primary/10' : 'bg-muted/50'
-                      } hover:bg-muted`}
+                      className="flex items-center justify-between p-4 rounded-lg bg-muted/50 hover:bg-muted transition-colors animate-fade-in"
+                      style={{ animationDelay: `${idx * 0.1}s` }}
                     >
                       <div className="flex items-center gap-4">
-                        <div className={`text-2xl font-bold ${idx < 3 ? 'text-primary' : 'text-muted-foreground'} w-12`}>
-                          #{player.rank}
-                        </div>
-                        <div className="text-2xl">{player.badge}</div>
+                        <div className="text-3xl">{purchase.emoji}</div>
                         <div>
-                          <div className="font-semibold text-lg">{player.username}</div>
-                          <div className="text-sm text-muted-foreground">Уровень {player.level}</div>
+                          <div className="font-semibold text-lg">{purchase.username}</div>
+                          <div className="text-sm text-muted-foreground">{purchase.time}</div>
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="font-bold text-lg">{player.kills}</div>
-                        <div className="text-sm text-muted-foreground">убийств</div>
+                        <Badge className="text-base px-4 py-1">{purchase.donate}</Badge>
                       </div>
                     </div>
                   ))}
                 </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-primary/50">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-primary">
+                  <Icon name="Sparkles" size={24} />
+                  Стань частью истории!
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-lg mb-4">
+                  Поддержи сервер AsuxGrief и получи эксклюзивные привилегии. Твоя покупка появится в этом списке!
+                </p>
+                <Button size="lg" onClick={() => setActiveSection('donate')} className="gap-2">
+                  <Icon name="Gem" size={20} />
+                  Перейти к донатам
+                </Button>
               </CardContent>
             </Card>
           </div>
