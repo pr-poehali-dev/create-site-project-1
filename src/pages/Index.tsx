@@ -7,24 +7,41 @@ import { Badge } from '@/components/ui/badge';
 const Index = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [onlinePlayers, setOnlinePlayers] = useState(187);
+  const [recentPurchases, setRecentPurchases] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [adminPassword, setAdminPassword] = useState('');
+  const [showAdminLogin, setShowAdminLogin] = useState(false);
+  const [selectedDonate, setSelectedDonate] = useState(null);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setOnlinePlayers(prev => Math.max(150, Math.min(250, prev + Math.floor(Math.random() * 11) - 5)));
-    }, 5000);
+    fetchServerStats();
+    const interval = setInterval(fetchServerStats, 10000);
     return () => clearInterval(interval);
   }, []);
 
-  const recentPurchases = [
-    { username: 'DarkMaster_01', donate: 'MOROK', time: '2 минуты назад', emoji: '❄️' },
-    { username: 'ProGamer228', donate: 'CHRISTMAS', time: '15 минут назад', emoji: '🎄' },
-    { username: 'BuilderKing', donate: 'XOZYAIN', time: '27 минут назад', emoji: '🏗️' },
-    { username: 'PvPLegend', donate: 'ELYTRIUM', time: '1 час назад', emoji: '✨' },
-    { username: 'NoobSlayer', donate: 'VLASTELIN', time: '1 час назад', emoji: '⚔️' },
-    { username: 'MegaBuilder', donate: 'MOROK', time: '2 часа назад', emoji: '❄️' },
-    { username: 'IceMage777', donate: 'CHRISTMAS', time: '3 часа назад', emoji: '🎄' },
-    { username: 'RedstoneKing', donate: 'PRAVITEL', time: '4 часа назад', emoji: '👑' },
-  ];
+  const fetchServerStats = async () => {
+    try {
+      const response = await fetch('https://functions.poehali.dev/1652722e-fe56-488e-85ad-144d1a307f9e');
+      const data = await response.json();
+      setOnlinePlayers(data.online);
+      setRecentPurchases(data.purchases);
+    } catch (error) {
+      console.error('Error fetching server stats:', error);
+    }
+  };
+
+  const handleAdminLogin = () => {
+    if (adminPassword === 'asuxadmin2024') {
+      setIsAdmin(true);
+      setShowAdminLogin(false);
+      setActiveSection('admin');
+    } else {
+      alert('Неверный пароль');
+    }
+  };
+
+
 
   const donateOptions = [
     { 
@@ -112,7 +129,7 @@ const Index = () => {
               <div className="w-10 h-10 bg-primary rounded-sm flex items-center justify-center text-2xl">⛏️</div>
               <h1 className="text-2xl font-bold text-primary">AsuxGrief</h1>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 items-center">
               <Button variant={activeSection === 'home' ? 'default' : 'ghost'} onClick={() => setActiveSection('home')} className="gap-2">
                 <Icon name="Home" size={18} />
                 Главная
@@ -133,6 +150,17 @@ const Index = () => {
                 <Icon name="ShoppingBag" size={18} />
                 Покупки
               </Button>
+              {isAdmin && (
+                <Button variant={activeSection === 'admin' ? 'default' : 'ghost'} onClick={() => setActiveSection('admin')} className="gap-2">
+                  <Icon name="Settings" size={18} />
+                  Админ
+                </Button>
+              )}
+              {!isAdmin && (
+                <Button variant="ghost" size="icon" onClick={() => setShowAdminLogin(true)}>
+                  <Icon name="Lock" size={18} />
+                </Button>
+              )}
             </div>
           </div>
         </div>
@@ -438,7 +466,14 @@ const Index = () => {
                         </li>
                       ))}
                     </ul>
-                    <Button className="w-full" variant={option.name === 'MOROK' || option.isLimited ? 'default' : 'outline'}>
+                    <Button 
+                      className="w-full" 
+                      variant={option.name === 'MOROK' || option.isLimited ? 'default' : 'outline'}
+                      onClick={() => {
+                        setSelectedDonate(option);
+                        setShowPaymentModal(true);
+                      }}
+                    >
                       Купить
                     </Button>
                   </CardContent>
@@ -520,7 +555,203 @@ const Index = () => {
             </Card>
           </div>
         )}
+
+        {activeSection === 'admin' && isAdmin && (
+          <div className="max-w-4xl mx-auto space-y-8">
+            <div className="text-center space-y-4">
+              <h2 className="text-4xl font-bold text-foreground">Админ-панель</h2>
+              <p className="text-xl text-muted-foreground">Управление балансом и финансами</p>
+            </div>
+
+            <Card className="border-primary/50">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-primary">
+                  <Icon name="Wallet" size={24} />
+                  Баланс проекта
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="text-center p-8 bg-primary/10 rounded-lg">
+                  <div className="text-5xl font-bold text-primary mb-2">125,430 ₽</div>
+                  <div className="text-muted-foreground">Доступно для вывода</div>
+                </div>
+
+                <div className="grid md:grid-cols-3 gap-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-sm text-muted-foreground">Сегодня</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold text-primary">12,340 ₽</div>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-sm text-muted-foreground">За неделю</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold text-primary">67,890 ₽</div>
+                    </CardContent>
+                  </Card>
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-sm text-muted-foreground">За месяц</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold text-primary">245,670 ₽</div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Icon name="CreditCard" size={24} className="text-primary" />
+                  Вывод средств
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Номер карты (российская)</label>
+                  <input 
+                    type="text" 
+                    placeholder="0000 0000 0000 0000" 
+                    className="w-full p-3 rounded-lg border border-border bg-background"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Сумма вывода (₽)</label>
+                  <input 
+                    type="number" 
+                    placeholder="10000" 
+                    className="w-full p-3 rounded-lg border border-border bg-background"
+                  />
+                </div>
+                <Button className="w-full" size="lg">
+                  <Icon name="Send" size={20} className="mr-2" />
+                  Вывести средства
+                </Button>
+                <p className="text-sm text-muted-foreground text-center">
+                  Средства поступят на карту в течение 1-3 рабочих дней
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        )}
       </main>
+
+      {showAdminLogin && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50" onClick={() => setShowAdminLogin(false)}>
+          <Card className="w-full max-w-md m-4" onClick={(e) => e.stopPropagation()}>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Icon name="Lock" size={24} />
+                Вход в админ-панель
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Пароль</label>
+                <input 
+                  type="password" 
+                  value={adminPassword}
+                  onChange={(e) => setAdminPassword(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleAdminLogin()}
+                  placeholder="Введите пароль"
+                  className="w-full p-3 rounded-lg border border-border bg-background"
+                />
+              </div>
+              <div className="flex gap-2">
+                <Button onClick={handleAdminLogin} className="flex-1">
+                  Войти
+                </Button>
+                <Button onClick={() => setShowAdminLogin(false)} variant="outline" className="flex-1">
+                  Отмена
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {showPaymentModal && selectedDonate && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 overflow-y-auto" onClick={() => setShowPaymentModal(false)}>
+          <Card className="w-full max-w-lg m-4" onClick={(e) => e.stopPropagation()}>
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                <span>Оплата {selectedDonate.name}</span>
+                <Button variant="ghost" size="icon" onClick={() => setShowPaymentModal(false)}>
+                  <Icon name="X" size={20} />
+                </Button>
+              </CardTitle>
+              <CardDescription>
+                Сумма к оплате: <span className="text-2xl font-bold text-primary">{selectedDonate.price} ₽</span>
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Ваш игровой ник</label>
+                <input 
+                  type="text" 
+                  placeholder="Введите ник на сервере"
+                  className="w-full p-3 rounded-lg border border-border bg-background"
+                />
+              </div>
+
+              <div className="space-y-3">
+                <div className="font-semibold text-lg">Выберите способ оплаты:</div>
+                
+                <Button 
+                  className="w-full justify-start h-auto p-4 hover:scale-105 transition-transform" 
+                  variant="outline"
+                  onClick={() => alert('Переход на оплату СБП...')}
+                >
+                  <div className="flex items-center gap-4 w-full">
+                    <div className="text-4xl">🏦</div>
+                    <div className="text-left flex-1">
+                      <div className="font-bold text-lg">Система Быстрых Платежей (СБП)</div>
+                      <div className="text-sm text-muted-foreground">Оплата через любой российский банк</div>
+                    </div>
+                    <Icon name="ChevronRight" size={24} />
+                  </div>
+                </Button>
+
+                <Button 
+                  className="w-full justify-start h-auto p-4 hover:scale-105 transition-transform" 
+                  variant="outline"
+                  onClick={() => alert('Переход на оплату картой...')}
+                >
+                  <div className="flex items-center gap-4 w-full">
+                    <div className="text-4xl">💳</div>
+                    <div className="text-left flex-1">
+                      <div className="font-bold text-lg">Банковская карта</div>
+                      <div className="text-sm text-muted-foreground">Visa, Mastercard, МИР</div>
+                    </div>
+                    <Icon name="ChevronRight" size={24} />
+                  </div>
+                </Button>
+              </div>
+
+              <div className="p-4 bg-muted/50 rounded-lg space-y-2 text-sm">
+                <p className="flex items-start gap-2">
+                  <Icon name="Check" size={16} className="text-primary mt-0.5" />
+                  <span>Привилегии активируются автоматически</span>
+                </p>
+                <p className="flex items-start gap-2">
+                  <Icon name="Check" size={16} className="text-primary mt-0.5" />
+                  <span>Безопасная оплата через защищённое соединение</span>
+                </p>
+                <p className="flex items-start gap-2">
+                  <Icon name="Check" size={16} className="text-primary mt-0.5" />
+                  <span>Поддержка 24/7 в Discord</span>
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
 
       <footer className="bg-card border-t border-border mt-20">
         <div className="container mx-auto px-4 py-8">
