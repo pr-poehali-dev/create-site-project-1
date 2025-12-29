@@ -57,7 +57,12 @@ const Index = () => {
       features: ['Легендарный ник + префикс', 'Приват 20 регионов', '10 домов', 'Кит Morok', 'Безлимитный полёт', 'Невидимость', 'Создание варпов'],
       image: 'https://cdn.poehali.dev/projects/005b4f93-75ef-4197-8d61-44e9c26cf1f4/files/8c425247-076c-40bf-8870-fcd40bdb3c6d.jpg'
     },
-    { name: 'CUSTOM', price: 500, features: ['Индивидуальный донат', 'Выбери свои привилегии', 'Свой префикс', 'Уникальные возможности'] },
+    { 
+      name: 'CUSTOM', 
+      price: 500, 
+      features: ['Индивидуальный донат', 'Выбери свои привилегии', 'Свой префикс', 'Уникальные возможности'],
+      image: 'https://cdn.poehali.dev/projects/005b4f93-75ef-4197-8d61-44e9c26cf1f4/files/4dad6187-67be-47f8-88e6-d8ce5e9d28b2.jpg'
+    },
   ];
 
   const rules = [
