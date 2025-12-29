@@ -19,6 +19,14 @@ const Index = () => {
   ];
 
   const donateOptions = [
+    { 
+      name: 'CHRISTMAS', 
+      price: 399, 
+      features: ['❄️ Снежный эффект при ходьбе', '🎄 Новогодний префикс', '⛄ Спавн снеговика-помощника', '🎁 Эксклюзивный кит Christmas', 'Приват 8 регионов', '5 домов'], 
+      isLimited: true,
+      limitedUntil: '31 января',
+      image: 'https://cdn.poehali.dev/projects/005b4f93-75ef-4197-8d61-44e9c26cf1f4/files/618e11e8-748c-4285-b2b1-c9298ef454d1.jpg'
+    },
     { name: 'VIP', price: 199, features: ['Цветной ник', 'Приват 5 регионов', '3 дома', 'Кит VIP'] },
     { name: 'PREMIUM', price: 399, features: ['Цветной ник + префикс', 'Приват 10 регионов', '5 домов', 'Кит PREMIUM', 'Полёт 30 мин/день'] },
     { name: 'ELITE', price: 699, features: ['Градиентный ник + префикс', 'Приват 20 регионов', '10 домов', 'Кит ELITE', 'Безлимитный полёт', 'Невидимость'] },
@@ -295,13 +303,26 @@ const Index = () => {
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {donateOptions.map((option, idx) => (
-                <Card key={idx} className={`hover:scale-105 transition-transform ${option.name === 'ELITE' ? 'border-primary border-2' : ''}`}>
+                <Card key={idx} className={`hover:scale-105 transition-transform ${option.name === 'ELITE' ? 'border-primary border-2' : ''} ${option.isLimited ? 'border-2 border-blue-500 relative overflow-hidden' : ''}`}>
+                  {option.isLimited && (
+                    <div className="absolute top-0 right-0 bg-gradient-to-br from-blue-500 to-cyan-400 text-white px-3 py-1 text-xs font-bold transform rotate-12 translate-x-6 -translate-y-1">
+                      ⏰ До {option.limitedUntil}
+                    </div>
+                  )}
                   <CardHeader>
+                    {option.isLimited && option.image && (
+                      <div className="mb-3 -mx-6 -mt-6">
+                        <img src={option.image} alt={option.name} className="w-full h-32 object-cover" />
+                      </div>
+                    )}
                     {option.name === 'ELITE' && (
                       <Badge className="w-fit mb-2 bg-primary">Популярный</Badge>
                     )}
                     {option.name === 'CUSTOM' && (
                       <Badge className="w-fit mb-2 bg-secondary">Новинка</Badge>
+                    )}
+                    {option.isLimited && (
+                      <Badge className="w-fit mb-2 bg-gradient-to-r from-blue-500 to-cyan-400">🎄 Лимитированный</Badge>
                     )}
                     <CardTitle className="text-2xl">{option.name}</CardTitle>
                     <div className="text-3xl font-bold text-primary mt-2">
@@ -317,7 +338,7 @@ const Index = () => {
                         </li>
                       ))}
                     </ul>
-                    <Button className="w-full" variant={option.name === 'ELITE' ? 'default' : 'outline'}>
+                    <Button className="w-full" variant={option.name === 'ELITE' || option.isLimited ? 'default' : 'outline'}>
                       Купить
                     </Button>
                   </CardContent>
