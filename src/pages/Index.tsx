@@ -27,9 +27,36 @@ const Index = () => {
       limitedUntil: '31 января',
       image: 'https://cdn.poehali.dev/projects/005b4f93-75ef-4197-8d61-44e9c26cf1f4/files/618e11e8-748c-4285-b2b1-c9298ef454d1.jpg'
     },
-    { name: 'VIP', price: 199, features: ['Цветной ник', 'Приват 5 регионов', '3 дома', 'Кит VIP'] },
-    { name: 'PREMIUM', price: 399, features: ['Цветной ник + префикс', 'Приват 10 регионов', '5 домов', 'Кит PREMIUM', 'Полёт 30 мин/день'] },
-    { name: 'ELITE', price: 699, features: ['Градиентный ник + префикс', 'Приват 20 регионов', '10 домов', 'Кит ELITE', 'Безлимитный полёт', 'Невидимость'] },
+    { 
+      name: 'PRAVITEL', 
+      price: 49, 
+      features: ['Цветной ник', 'Приват 2 региона', '1 дом', 'Кит Pravitel'],
+      image: 'https://cdn.poehali.dev/projects/005b4f93-75ef-4197-8d61-44e9c26cf1f4/files/c7eef58b-0f06-4d08-9992-dc3b5cc432e7.jpg'
+    },
+    { 
+      name: 'VLASTELIN', 
+      price: 89, 
+      features: ['Цветной ник + префикс', 'Приват 4 региона', '2 дома', 'Кит Vlastelin', 'Телепорт к игрокам'],
+      image: 'https://cdn.poehali.dev/projects/005b4f93-75ef-4197-8d61-44e9c26cf1f4/files/5c9317ba-f4a5-4a51-bd68-2b7c29aa9a7e.jpg'
+    },
+    { 
+      name: 'ELYTRIUM', 
+      price: 149, 
+      features: ['Градиентный ник', 'Приват 7 регионов', '3 дома', 'Кит Elytrium', 'Полёт 20 мин/день', 'Смена погоды'],
+      image: 'https://cdn.poehali.dev/projects/005b4f93-75ef-4197-8d61-44e9c26cf1f4/files/e192e1c2-fa57-48ec-a92b-3950cec0c859.jpg'
+    },
+    { 
+      name: 'XOZYAIN', 
+      price: 219, 
+      features: ['Анимированный ник + префикс', 'Приват 12 регионов', '6 домов', 'Кит Xozyain', 'Полёт 60 мин/день', 'Варп на базу'],
+      image: 'https://cdn.poehali.dev/projects/005b4f93-75ef-4197-8d61-44e9c26cf1f4/files/75886c14-3da6-4d0a-a33f-0bfbf38a2565.jpg'
+    },
+    { 
+      name: 'MOROK', 
+      price: 500, 
+      features: ['Легендарный ник + префикс', 'Приват 20 регионов', '10 домов', 'Кит Morok', 'Безлимитный полёт', 'Невидимость', 'Создание варпов'],
+      image: 'https://cdn.poehali.dev/projects/005b4f93-75ef-4197-8d61-44e9c26cf1f4/files/cd2c0b4c-3028-44b5-82a4-ca4a81876e60.jpg'
+    },
     { name: 'CUSTOM', price: 500, features: ['Индивидуальный донат', 'Выбери свои привилегии', 'Свой префикс', 'Уникальные возможности'] },
   ];
 
@@ -303,19 +330,19 @@ const Index = () => {
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {donateOptions.map((option, idx) => (
-                <Card key={idx} className={`hover:scale-105 transition-transform ${option.name === 'ELITE' ? 'border-primary border-2' : ''} ${option.isLimited ? 'border-2 border-blue-500 relative overflow-hidden' : ''}`}>
+                <Card key={idx} className={`hover:scale-105 transition-transform ${option.name === 'MOROK' ? 'border-primary border-2' : ''} ${option.isLimited ? 'border-2 border-blue-500 relative overflow-hidden' : ''}`}>
                   {option.isLimited && (
                     <div className="absolute top-0 right-0 bg-gradient-to-br from-blue-500 to-cyan-400 text-white px-3 py-1 text-xs font-bold transform rotate-12 translate-x-6 -translate-y-1">
                       ⏰ До {option.limitedUntil}
                     </div>
                   )}
                   <CardHeader>
-                    {option.isLimited && option.image && (
+                    {option.image && (
                       <div className="mb-3 -mx-6 -mt-6">
                         <img src={option.image} alt={option.name} className="w-full h-32 object-cover" />
                       </div>
                     )}
-                    {option.name === 'ELITE' && (
+                    {option.name === 'MOROK' && (
                       <Badge className="w-fit mb-2 bg-primary">Популярный</Badge>
                     )}
                     {option.name === 'CUSTOM' && (
@@ -338,7 +365,7 @@ const Index = () => {
                         </li>
                       ))}
                     </ul>
-                    <Button className="w-full" variant={option.name === 'ELITE' || option.isLimited ? 'default' : 'outline'}>
+                    <Button className="w-full" variant={option.name === 'MOROK' || option.isLimited ? 'default' : 'outline'}>
                       Купить
                     </Button>
                   </CardContent>
