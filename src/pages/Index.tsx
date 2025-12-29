@@ -31,31 +31,31 @@ const Index = () => {
       name: 'PRAVITEL', 
       price: 49, 
       features: ['Цветной ник', 'Приват 2 региона', '1 дом', 'Кит Pravitel'],
-      image: 'https://cdn.poehali.dev/projects/005b4f93-75ef-4197-8d61-44e9c26cf1f4/files/c7eef58b-0f06-4d08-9992-dc3b5cc432e7.jpg'
+      image: 'https://cdn.poehali.dev/projects/005b4f93-75ef-4197-8d61-44e9c26cf1f4/files/429a27d6-7983-43ed-85fe-0dbbb665f748.jpg'
     },
     { 
       name: 'VLASTELIN', 
       price: 89, 
       features: ['Цветной ник + префикс', 'Приват 4 региона', '2 дома', 'Кит Vlastelin', 'Телепорт к игрокам'],
-      image: 'https://cdn.poehali.dev/projects/005b4f93-75ef-4197-8d61-44e9c26cf1f4/files/5c9317ba-f4a5-4a51-bd68-2b7c29aa9a7e.jpg'
+      image: 'https://cdn.poehali.dev/projects/005b4f93-75ef-4197-8d61-44e9c26cf1f4/files/7876c212-daa6-4d0b-b5f5-3a91b5d8d9d6.jpg'
     },
     { 
       name: 'ELYTRIUM', 
       price: 149, 
       features: ['Градиентный ник', 'Приват 7 регионов', '3 дома', 'Кит Elytrium', 'Полёт 20 мин/день', 'Смена погоды'],
-      image: 'https://cdn.poehali.dev/projects/005b4f93-75ef-4197-8d61-44e9c26cf1f4/files/e192e1c2-fa57-48ec-a92b-3950cec0c859.jpg'
+      image: 'https://cdn.poehali.dev/projects/005b4f93-75ef-4197-8d61-44e9c26cf1f4/files/b19c1c4b-1e9c-4f1e-af53-c4d11ff298f4.jpg'
     },
     { 
       name: 'XOZYAIN', 
       price: 219, 
       features: ['Анимированный ник + префикс', 'Приват 12 регионов', '6 домов', 'Кит Xozyain', 'Полёт 60 мин/день', 'Варп на базу'],
-      image: 'https://cdn.poehali.dev/projects/005b4f93-75ef-4197-8d61-44e9c26cf1f4/files/75886c14-3da6-4d0a-a33f-0bfbf38a2565.jpg'
+      image: 'https://cdn.poehali.dev/projects/005b4f93-75ef-4197-8d61-44e9c26cf1f4/files/b6269cb4-8b7f-4c16-94b0-e3f0da13defa.jpg'
     },
     { 
       name: 'MOROK', 
       price: 500, 
       features: ['Легендарный ник + префикс', 'Приват 20 регионов', '10 домов', 'Кит Morok', 'Безлимитный полёт', 'Невидимость', 'Создание варпов'],
-      image: 'https://cdn.poehali.dev/projects/005b4f93-75ef-4197-8d61-44e9c26cf1f4/files/cd2c0b4c-3028-44b5-82a4-ca4a81876e60.jpg'
+      image: 'https://cdn.poehali.dev/projects/005b4f93-75ef-4197-8d61-44e9c26cf1f4/files/8c425247-076c-40bf-8870-fcd40bdb3c6d.jpg'
     },
     { name: 'CUSTOM', price: 500, features: ['Индивидуальный донат', 'Выбери свои привилегии', 'Свой префикс', 'Уникальные возможности'] },
   ];
